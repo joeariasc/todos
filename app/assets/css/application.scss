@@ -1,17 +1,60 @@
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "variables";
 
-// This is just some CSS for the welcome home landing page, feel free to 
+// This is just some CSS for the welcome home landing page, feel free to
 // remove it.
 .welcome {
     width: 700px;
     margin: 0 auto;
-    
-    img { 
+
+    img {
         width: 300px;
     }
 
     h1 {
         font-size: 2rem;
+    }
+}
+
+.background-body {
+    background-color: #f6f6f4;
+}
+
+.brand-title {
+    font-size: 1.8rem !important;
+}
+
+.bg-todos {
+    background-color: $todos-colour;
+}
+
+.bg-thead-todos {
+    background-color: $table-thead;
+}
+
+.todos-links-color {
+    color: $todos-colour !important;
+}
+
+.column-one {
+    width: 5%;
+}
+
+.column-two {
+    width: 45%;
+}
+
+.column-three {
+    width: 25%;
+}
+
+.column-four {
+    width: 25%;
+}
+
+@media only screen and (max-width: 992px) {
+    .brand-container {
+        border-right: none !important;
     }
 }
