@@ -2,7 +2,7 @@ package app
 
 import (
 	base "todos"
-	"todos/app/actions/home"
+	"todos/app/actions"
 	"todos/app/middleware"
 
 	"github.com/gobuffalo/buffalo"
@@ -14,6 +14,6 @@ func setRoutes(root *buffalo.App) {
 	root.Use(middleware.ParameterLogger)
 	root.Use(middleware.CSRF)
 
-	root.GET("/", home.Index)
+	root.GET("/", actions.Index)
 	root.ServeFiles("/", base.Assets)
 }
