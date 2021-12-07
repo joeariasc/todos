@@ -11,6 +11,7 @@ require (
 	github.com/gobuffalo/pop/v5 v5.3.4
 	github.com/gobuffalo/suite/v3 v3.0.2
 	github.com/paganotoni/fsbox v1.1.3
+	github.com/wawandco/ox v0.11.4
 )
 
 require (
@@ -25,7 +26,7 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gobuffalo/events v1.4.2 // indirect
-	github.com/gobuffalo/fizz v1.10.0 // indirect
+	github.com/gobuffalo/fizz v1.13.0 // indirect
 	github.com/gobuffalo/flect v0.2.4 // indirect
 	github.com/gobuffalo/github_flavored_markdown v1.1.1 // indirect
 	github.com/gobuffalo/helpers v0.6.4 // indirect
@@ -82,11 +83,13 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
+	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
