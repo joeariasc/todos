@@ -1,0 +1,7 @@
+create_table("todos") {
+    t.Column("id", "uuid", {primary: true})
+    t.Column("title", "string", {"size": 50})
+    t.Column("details", "text", {"size": 255, "null": true})
+    t.Column("limit_date", "date", {})
+    t.Column("is_completed", "bool", {})
+}
