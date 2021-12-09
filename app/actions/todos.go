@@ -19,3 +19,8 @@ func Index(c buffalo.Context) error {
 	c.Set("todos", todos)
 	return c.Render(http.StatusOK, r.HTML("todos/index.plush.html"))
 }
+
+func NewTodo(c buffalo.Context) error  {
+	c.Set("todo", models.Todo{})
+	return c.Render(http.StatusOK, r.HTML("todos/new.plush.html"))
+}
