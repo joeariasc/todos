@@ -1,0 +1,27 @@
+<%= partial("partials/nav.plush.html") %>
+<div class="container py-5 w-60">
+    <div class="card shadow-sm">
+        <div class="card-body px-5 py-5">
+            <h3 class="card-title font-weight-bold">New Task</h3>
+            <%= form_for(todo, {action: "", method: "POST"}) { %>
+            <div class="form-row pt-4">
+                <div class="col-6">
+                    <%= f.InputTag("Title", {label: "Title", type: "text"}) %>
+                </div>
+                <div class="col-6">
+                    <%= f.InputTag("LimitDate", {label: "Limit Date", type: "date", value: "", min:"2021-12-12"}) %>
+                </div>
+                <div class="col-12">
+                    <%= f.TextArea("Details", {rows: 4}) %>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-end mt-3">
+                        <a href="#" class="btn btn-light mr-md-3">Cancel</a>
+                        <button type="submit" class="btn bg-todos text-white px-4 rounded-sm">Create Task</button>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
