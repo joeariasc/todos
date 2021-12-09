@@ -13,6 +13,7 @@ require (
 	github.com/gobuffalo/suite/v3 v3.0.2
 	github.com/gofrs/uuid v4.1.0+incompatible
 	github.com/paganotoni/fsbox v1.1.3
+	github.com/pkg/errors v0.9.1
 	github.com/wawandco/ox v0.11.4
 )
 
@@ -72,7 +73,6 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.16 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/monoculum/formam v3.5.5+incompatible // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
