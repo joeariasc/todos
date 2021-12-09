@@ -16,5 +16,6 @@ func Index(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Index - Error while getting all todos"))
 	}
+	c.Set("todos", todos)
 	return c.Render(http.StatusOK, r.HTML("todos/index.plush.html"))
 }
