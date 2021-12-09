@@ -8,8 +8,10 @@ require (
 	github.com/gobuffalo/envy v1.10.1
 	github.com/gobuffalo/mw-csrf v1.0.0
 	github.com/gobuffalo/mw-paramlogger v1.0.0
+	github.com/gobuffalo/nulls v0.4.1
 	github.com/gobuffalo/pop/v5 v5.3.4
 	github.com/gobuffalo/suite/v3 v3.0.2
+	github.com/gofrs/uuid v4.1.0+incompatible
 	github.com/paganotoni/fsbox v1.1.3
 	github.com/wawandco/ox v0.11.4
 )
@@ -33,12 +35,10 @@ require (
 	github.com/gobuffalo/httptest v1.5.1 // indirect
 	github.com/gobuffalo/logger v1.0.6 // indirect
 	github.com/gobuffalo/meta v0.3.1 // indirect
-	github.com/gobuffalo/nulls v0.4.1 // indirect
 	github.com/gobuffalo/packd v1.0.1 // indirect
 	github.com/gobuffalo/plush/v4 v4.1.9 // indirect
 	github.com/gobuffalo/tags/v3 v3.1.2 // indirect
 	github.com/gobuffalo/validate/v3 v3.3.1 // indirect
-	github.com/gofrs/uuid v4.1.0+incompatible // indirect
 	github.com/gofrs/uuid/v3 v3.1.2 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
