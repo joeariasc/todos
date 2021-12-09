@@ -1,91 +1,42 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-todos p-4">
-    <div class="container">
-        <div class="border-right brand-container">
-            <a
-                class="
-                    brand-title
-                    navbar-brand
-                    text-white
-                    font-weight-bold
-                    mr-lg-5 mr-sm-0 mr-md-0
-                "
-                href="#"
-                >ToDo List</a
-            >
-        </div>
-        <div class="ml-lg-4 text-white">
-            <p class="m-0 font-weight-bold">4 Incompleted Tasks</p>
-            <small class="m-0">Thursday 06, June 2019</small>
-        </div>
-
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a
-                        class="nav-link text-white font-weight-bold px-lg-4"
-                        href="#"
-                        >Incomplete Task</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white pl-lg-4" href="#"
-                        >Completed Task</a
-                    >
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<%= partial("partials/nav.plush.html") %>
 <div class="container">
     <ul class="nav justify-content-end my-3">
-        <a class="btn bg-todos text-white rounded-sm px-5 py-2"> Add Task </a>
+        <a href="#" class="btn bg-todos text-white rounded-sm px-5 py-2"> Add Task </a>
     </ul>
 </div>
 
 <div class="container">
     <table class="table rounded-lg shadow bg-light">
         <thead class="bg-thead-todos text-white">
-            <tr>
-                <th class="column-one" scope="col"></th>
-                <th class="column-two" scope="col">Task</th>
-                <th class="column-three" scope="col">Complete by</th>
-                <th class="column-four text-center" scope="col">Actions</th>
-            </tr>
+        <tr>
+            <th class="column-one" scope="col"></th>
+            <th class="column-two" scope="col">Task</th>
+            <th class="column-three" scope="col">Complete by</th>
+            <th class="column-four text-center" scope="col">Actions</th>
+        </tr>
         </thead>
         <tbody>
-            <%= for (todo) in todos { %>
-            <tr>
-                <td class="text-center" scope="row">
-                    <i class="text-muted far fa-check-circle"></i>
-                </td>
-                <td>
-                    <a class="todos-links-color" href="#">
-                        <%= todo.Title %>
-                    </a>
-                </td>
-                <td>
-                    <%= todo.LimitedDate.Format("Monday 02, January 2006") %>
-                </td>
-                <td>
-                    <div class="row mx-0 justify-content-center">
-                        <i class="text-muted fas fa-pencil-alt mx-3"></i>
-                        <i class="text-danger far fa-trash-alt mx-3"></i>
-                    </div>
-                </td>
-            </tr>
-            <% } %>
+        <%= for (todo) in todos { %>
+        <tr>
+            <td class="text-center" scope="row">
+                <i class="text-muted far fa-check-circle"></i>
+            </td>
+            <td>
+                <a class="todos-links-color" href="#">
+                    <%= todo.Title %>
+                </a>
+            </td>
+            <td>
+                <%= todo.LimitedDate.Format("Monday 02, January 2006") %>
+            </td>
+            <td>
+                <div class="row mx-0 justify-content-center">
+                    <i class="text-muted fas fa-pencil-alt mx-3"></i>
+                    <i class="text-danger far fa-trash-alt mx-3"></i>
+                </div>
+            </td>
+        </tr>
+        <% } %>
         </tbody>
     </table>
 </div>
