@@ -9,16 +9,16 @@
                     <%= f.InputTag("Title", {label: "Title", type: "text"}) %>
                 </div>
                 <div class="col-6">
-                    <%= f.InputTag("LimitedDate", {label: "Limit Date", type: "date", value: "", min:"2021-12-12"}) %>
+                    <%= f.InputTag("LimitDate", {label: "Limit Date", type: "date", value: "", min:"2021-12-12"}) %>
                 </div>
                 <div class="col-12">
                     <%= f.TextArea("Details", {rows: 4}) %>
                 </div>
                 <div class="col-12">
-                    <ul class="nav justify-content-end mt-3">
+                    <div class="d-flex justify-content-end mt-3">
                         <a href="#" class="btn btn-light mr-md-3">Cancel</a>
                         <button type="submit" class="btn bg-todos text-white px-4 rounded-sm">Create Task</button>
-                    </ul>
+                    </div>
                 </div>
             </div>
             <% } %>
