@@ -7,6 +7,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop/v5"
+	"github.com/pkg/errors"
 )
 
 func Index(c buffalo.Context) error {
@@ -14,14 +15,9 @@ func Index(c buffalo.Context) error {
 	todos := models.Todos{}
 	err := tx.All(&todos)
 	if err != nil {
-		return err
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Index - Error while getting all todos"))
 	}
 	todosType := fmt.Sprintf("%T", todos)
 	fmt.Println(todosType)
-	for _, todo := range todos {
-		fmt.Println("===========TODO")
-		fmt.Println(todo)
-	}
-
 	return c.Render(http.StatusOK, r.HTML("todos/index.plush.html"))
 }
