@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"fmt"
 	"net/http"
 	"todos/app/models"
 
@@ -17,7 +16,5 @@ func Index(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Index - Error while getting all todos"))
 	}
-	todosType := fmt.Sprintf("%T", todos)
-	fmt.Println(todosType)
 	return c.Render(http.StatusOK, r.HTML("todos/index.plush.html"))
 }
