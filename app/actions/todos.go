@@ -25,10 +25,9 @@ func NewTodo(c buffalo.Context) error {
 	return c.Render(http.StatusOK, r.HTML("todos/new.plush.html"))
 }
 
-func StoreTodo(c buffalo.Context) error {
+func SaveTodo(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	todo := models.Todo{}
-	todo.IsCompleted = false
 	if err := c.Bind(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while bind a todo"))
 	}
