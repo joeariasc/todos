@@ -20,7 +20,19 @@ func Index(c buffalo.Context) error {
 	return c.Render(http.StatusOK, r.HTML("todos/index.plush.html"))
 }
 
-func NewTodo(c buffalo.Context) error  {
+func NewTodo(c buffalo.Context) error {
 	c.Set("todo", models.Todo{})
 	return c.Render(http.StatusOK, r.HTML("todos/new.plush.html"))
+}
+
+func SaveTodo(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	todo := models.Todo{}
+	if err := c.Bind(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while bind a todo"))
+	}
+	if err := tx.Create(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while saving a todo"))
+	}
+	return c.Redirect(http.StatusSeeOther, "rootPath()")
 }
