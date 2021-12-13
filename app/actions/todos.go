@@ -34,5 +34,18 @@ func SaveTodo(c buffalo.Context) error {
 	if err := tx.Create(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while saving a todo"))
 	}
-	return c.Redirect(http.StatusSeeOther, "rootPath()")
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
+}
+
+func DeleteTodo(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	todo := models.Todo{}
+	todoID := c.Param("todo_id")
+	if err := tx.Find(&todo, todoID); err != nil {
+		return c.Render(http.StatusNotFound, r.String("ToDo not Found"))
+	}
+	if err := tx.Destroy(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Delete - Error while destroy a todo"))
+	}
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
 }
