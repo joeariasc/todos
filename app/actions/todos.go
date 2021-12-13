@@ -34,7 +34,7 @@ func SaveTodo(c buffalo.Context) error {
 	if err := tx.Create(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while saving a todo"))
 	}
-	return c.Redirect(http.StatusSeeOther, "rootPath()")
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
 }
 
 func DeleteTodo(c buffalo.Context) error {
@@ -47,5 +47,5 @@ func DeleteTodo(c buffalo.Context) error {
 	if err := tx.Destroy(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Delete - Error while destroy a todo"))
 	}
-	return c.Redirect(http.StatusSeeOther, "rootPath()")
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
 }
