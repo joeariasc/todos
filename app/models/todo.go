@@ -71,7 +71,7 @@ type ValidLimitDateAfterToday struct {
 }
 
 func (v *ValidLimitDateAfterToday) IsValid(errors *validate.Errors) {
-	if v.LimitDate.Day() > v.Today.Day() {
+	if v.LimitDate.After(v.Today) {
 		return
 	}
 	errors.Add(validators.GenerateKey(v.FirstName), fmt.Sprintf("%s must be after %s.", v.FirstName, v.SecondName))
