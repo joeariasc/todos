@@ -63,6 +63,11 @@ func UpdateTodo(c buffalo.Context) error {
 	if err := c.Bind(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while bind a todo"))
 	}
+	if verrs := todo.Validate(); verrs.HasAny() {
+		c.Set("todo", todo)
+		c.Set("errors", verrs.Errors)
+		return c.Render(http.StatusUnprocessableEntity, r.HTML("todos/edit.plush.html"))
+	}
 	if err := tx.Update(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while updating a todo"))
 	}
