@@ -42,10 +42,26 @@ func EditTodo(c buffalo.Context) error {
 	todoID := c.Param("todo_id")
 	todo := models.Todo{}
 	if err := tx.Find(&todo, todoID); err != nil {
-		return c.Render(http.StatusNotFound, r.String("ToDo not Found"))
+		return c.Error(http.StatusNotFound, errors.Wrap(err, "Edit - todo not found"))
 	}
 	c.Set("todo", todo)
 	return c.Render(http.StatusOK, r.HTML("todos/edit.plush.html"))
+}
+
+func UpdateTodo(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	todoID := c.Param("todo_id")
+	todo := models.Todo{}
+	if err := tx.Find(&todo, todoID); err != nil {
+		return c.Error(http.StatusNotFound, errors.Wrap(err, "Update - todo not found"))
+	}
+	if err := c.Bind(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while bind a todo"))
+	}
+	if err := tx.Update(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while updating a todo"))
+	}
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
 }
 
 func DeleteTodo(c buffalo.Context) error {
