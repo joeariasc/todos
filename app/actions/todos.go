@@ -37,6 +37,17 @@ func SaveTodo(c buffalo.Context) error {
 	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
 }
 
+func EditTodo(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	todoID := c.Param("todo_id")
+	todo := models.Todo{}
+	if err := tx.Find(&todo, todoID); err != nil {
+		return c.Render(http.StatusNotFound, r.String("ToDo not Found"))
+	}
+	c.Set("todo", todo)
+	return c.Render(http.StatusOK, r.HTML("todos/edit.plush.html"))
+}
+
 func DeleteTodo(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	todo := models.Todo{}
