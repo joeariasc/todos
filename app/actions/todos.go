@@ -31,6 +31,11 @@ func SaveTodo(c buffalo.Context) error {
 	if err := c.Bind(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while bind a todo"))
 	}
+	if verrs := todo.Validate(); verrs.HasAny() {
+		c.Set("todo", todo)
+		c.Set("errors", verrs.Errors)
+		return c.Render(http.StatusUnprocessableEntity, r.HTML("todos/new.plush.html"))
+	}
 	if err := tx.Create(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while saving a todo"))
 	}
