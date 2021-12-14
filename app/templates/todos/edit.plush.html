@@ -3,11 +3,11 @@
     <div class="card shadow-sm">
         <div class="card-body px-5 py-5">
             <h3 class="card-title font-weight-bold">New Task</h3>
-            <%= form_for(todo, {action: saveTodoPath(), method: "POST"}) { %>
-                <%= partial("todos/form.plush.html", {
-                    todo: todo,
-                    btnText: "Create Task"
-                })%>
+            <%= form_for(todo, {action: "", method: "PUT"}) { %>
+            <%= partial("todos/form.plush.html", {
+            todo: todo,
+            btnText: "Edit Task"
+            })%>
             <% } %>
         </div>
     </div>

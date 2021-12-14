@@ -1,0 +1,17 @@
+<div class="form-row pt-4">
+    <div class="col-6">
+        <%= f.InputTag("Title", {label: "Title", type: "text", value: todo.Title}) %>
+    </div>
+    <div class="col-6">
+        <%= f.InputTag("LimitDate", {label: "Limit Date", type: "date", value: todo.LimitDate, min:"2021-12-12"}) %>
+    </div>
+    <div class="col-12">
+        <%= f.TextArea("Details", {rows: 4, value: todo.Details}) %>
+    </div>
+    <div class="col-12">
+        <div class="d-flex justify-content-end mt-3">
+            <a href="<%= listTodoPath() %>" class="btn btn-light mr-md-3">Cancel</a>
+            <button type="submit" class="btn bg-todos text-white px-4 rounded-sm"><%= btnText %></button>
+        </div>
+    </div>
+</div>
