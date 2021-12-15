@@ -3,7 +3,7 @@
         <%= f.InputTag("Title", {label: "Title", type: "text", value: todo.Title}) %>
     </div>
     <div class="col-6">
-        <%= f.InputTag("LimitDate", {label: "Limit Date", type: "date", value: todo.LimitDate, min:"2021-12-12"}) %>
+        <%= f.InputTag("LimitDate", {label: "Limit Date", type: "date", value: valueDateToDo(todo.LimitDate), min: minDateTodo()}) %>
     </div>
     <div class="col-12">
         <%= f.TextArea("Details", {rows: 4, value: todo.Details}) %>
