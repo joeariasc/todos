@@ -49,6 +49,8 @@ func (ms *ModelSuite) Test_User_Create_UserExists() {
 	ms.Equal(0, count)
 
 	u := &User{
+		FirstName:            "Joe",
+		LastName:             "Arias",
 		Email:                "joe@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",

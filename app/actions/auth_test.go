@@ -12,6 +12,8 @@ func (as *ActionSuite) Test_Auth_New() {
 
 func (as *ActionSuite) Test_Auth_Create() {
 	u := &models.User{
+		FirstName:            "Joe",
+		LastName:             "Arias",
 		Email:                "joe@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",
@@ -37,6 +39,8 @@ func (as *ActionSuite) Test_Auth_Create_UnknownUser() {
 
 func (as *ActionSuite) Test_Auth_Create_BadPassword() {
 	u := &models.User{
+		FirstName:            "Joe",
+		LastName:             "Arias",
 		Email:                "joe@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",
