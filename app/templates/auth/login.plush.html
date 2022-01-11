@@ -1,0 +1,14 @@
+<%= partial("partials/nav.plush.html") %>
+
+<div class="container py-5 w-50">
+    <div class="card shadow-sm">
+        <div class="card-body mx-5 px-5 py-5 d-flex flex-column justify-content-center">
+            <h3 class="card-title font-weight-bold text-center">Sign In</h3>
+            <%= form_for(user, {action: signinPath(), method: "POST", autocomplete: "off"}) { %>
+            <%= f.InputTag("Email") %>
+            <%= f.InputTag("Password", {type: "password"}) %>
+            <button class="btn btn-success btn-block mt-5">Sign In!</button>
+            <% } %>
+        </div>
+    </div>
+</div>
