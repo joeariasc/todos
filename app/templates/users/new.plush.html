@@ -1,0 +1,17 @@
+<%= partial("partials/nav.plush.html") %>
+
+<div class="container py-5 w-50">
+    <div class="card shadow-sm">
+        <div class="card-body mx-5 px-5 py-5 d-flex flex-column justify-content-center">
+            <h3 class="card-title font-weight-bold text-center">Register</h3>
+            <%= form_for(user, {action: usersPath(), method: "POST", autocomplete: "off"}) { %>
+            <%= f.InputTag("FirsName")%>
+            <%= f.InputTag("LastName")%>
+            <%= f.InputTag("Email")%>
+            <%= f.InputTag("Password", {type: "password" }) %>
+            <%=f.InputTag("PasswordConfirmation", {type: "password" }) %>
+            <button class="btn btn-success btn-block mt-5">Register!</button>
+            <% } %>
+        </div>
+    </div>
+</div>
