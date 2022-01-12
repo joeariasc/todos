@@ -2,6 +2,7 @@ package actions
 
 import (
 	"database/sql"
+	"net/http"
 	"strings"
 	"todos/app/models"
 
@@ -55,12 +56,12 @@ func AuthCreate(c buffalo.Context) error {
 	c.Session().Set("current_user_id", u.ID)
 	c.Flash().Add("success", "Welcome Back to Buffalo!")
 
-	return c.Redirect(302, "/")
+	return c.Redirect(http.StatusFound, "listTodoPath()")
 }
 
 // AuthDestroy clears the session and logs a user out
 func AuthDestroy(c buffalo.Context) error {
 	c.Session().Clear()
 	c.Flash().Add("success", "You have been logged out!")
-	return c.Redirect(302, "/")
+	return c.Redirect(http.StatusFound, "homeTodoPath()")
 }
