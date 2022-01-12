@@ -11,8 +11,10 @@ import (
 
 func Index(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
+	currentUser := c.Value("current_user").(*models.User)
+	q := tx.Where("user_id = ?", currentUser.ID)
 	todos := models.Todos{}
-	err := tx.All(&todos)
+	err := q.All(&todos)
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Index - Error while getting all todos"))
 	}
@@ -27,10 +29,12 @@ func NewTodo(c buffalo.Context) error {
 
 func SaveTodo(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
+	currentUser := c.Value("current_user").(*models.User)
 	todo := models.Todo{}
 	if err := c.Bind(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Store - Error while bind a todo"))
 	}
+	todo.UserID = currentUser.ID
 	if verrs := todo.Validate(); verrs.HasAny() {
 		c.Set("todo", todo)
 		c.Set("errors", verrs.Errors)
