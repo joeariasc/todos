@@ -18,9 +18,9 @@ func setRoutes(root *buffalo.App) {
 	root.Use(middleware.SetCurrentUser)
 
 	root.GET("/users/new", actions.UsersNew)
-	root.POST("/users", actions.UsersCreate)
+	root.POST("/users", actions.UsersCreate).Name("saveUserPath")
 	root.GET("/signin", actions.AuthNew)
-	root.POST("/signin", actions.AuthCreate)
+	root.POST("/signin", actions.AuthCreate).Name("saveAuthPath")
 	root.DELETE("/signout", actions.AuthDestroy)
 
 	root.GET("/", actions.Index).Name("listTodoPath")
