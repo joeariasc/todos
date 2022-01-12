@@ -1,0 +1,1 @@
+add_column("todos", "user_id", "uuid", {"default_raw": "uuid_nil()"})

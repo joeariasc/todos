@@ -17,32 +17,42 @@
         </tr>
         </thead>
         <tbody>
-        <%= for (todo) in todos { %>
-        <tr>
-            <td class="text-center" scope="row">
-                <i class="text-muted far fa-check-circle"></i>
-            </td>
-            <td>
-                <a class="todos-links-color" href="#">
-                    <%= todo.Title %>
-                </a>
-            </td>
-            <td>
-                <%= todo.LimitDate.Format("Monday 02, January 2006") %>
-            </td>
-            <td>
-                <div class="row mx-0 justify-content-center">
-                    <a href="<%= editTodoPath({todo_id: todo.ID}) %>">
-                        <i class="text-muted fas fa-pencil-alt mx-3"></i>
+        <%= if (len(todos) == 0) { %>
+            <tr>
+                <td colspan="100%" class="">
+                    <p class="text-center m-0">
+                        No ToDos to show!
+                    </p>
+                </td>
+            </tr>
+        <% } else { %>
+            <%= for (todo) in todos { %>
+            <tr>
+                <td class="text-center" scope="row">
+                    <i class="text-muted far fa-check-circle"></i>
+                </td>
+                <td>
+                    <a class="todos-links-color" href="#">
+                        <%= todo.Title %>
                     </a>
-                    <a class="delete-item" href="#" data-entity="ToDo"
-                       data-url="<%= deleteTodoPath({todo_id: todo.ID}) %>" data-toggle="modal"
-                       data-target="#deleteModal">
-                        <i class="text-danger far fa-trash-alt mx-3"></i>
-                    </a>
-                </div>
-            </td>
-        </tr>
+                </td>
+                <td>
+                    <%= todo.LimitDate.Format("Monday 02, January 2006") %>
+                </td>
+                <td>
+                    <div class="row mx-0 justify-content-center">
+                        <a href="<%= editTodoPath({todo_id: todo.ID}) %>">
+                            <i class="text-muted fas fa-pencil-alt mx-3"></i>
+                        </a>
+                        <a class="delete-item" href="#" data-entity="ToDo"
+                           data-url="<%= deleteTodoPath({todo_id: todo.ID}) %>" data-toggle="modal"
+                           data-target="#deleteModal">
+                            <i class="text-danger far fa-trash-alt mx-3"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
         <% } %>
         </tbody>
     </table>

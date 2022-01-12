@@ -14,7 +14,9 @@
             >
         </div>
         <div class="ml-lg-4 text-white">
+            <%= if (current_user) { %>
             <p class="m-0 font-weight-bold">4 Incompleted Tasks</p>
+            <% } %>
             <small class="m-0"><%= todayDate() %></small>
         </div>
 
@@ -32,6 +34,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                <%= if (current_user) { %>
                 <li class="nav-item">
                     <a
                             class="nav-link text-white font-weight-bold"
@@ -44,22 +47,23 @@
                     >Completed Task</a
                     >
                 </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-expanded="false">
                         <%= if (current_user) { %>
-                        <%= current_user.email %>
+                        <%= current_user.FirstName + " " + current_user.LastName %>
                         <% } else { %>
                         Sign In / Register
                         <% } %>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <%= if (current_user) { %>
-                        <a href="#" class="dropdown-item">Sign Out</a>
+                        <a href="<%= signoutPath() %>" data-method="DELETE" class="dropdown-item">Sign Out</a>
                         <% } else { %>
-                        <a class="dropdown-item" href="#">Sign In</a>
+                        <a class="dropdown-item" href="<%= signinPath() %>">Sign In</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Register</a>
+                        <a class="dropdown-item" href="<%= newUsersPath() %>">Register</a>
                         <% } %>
                     </div>
                 </li>

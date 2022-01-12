@@ -1,0 +1,23 @@
+<%= partial("partials/nav.plush.html") %>
+
+<div class="jumbotron jumbotron-fluid mt-3">
+    <div class="container">
+        <h1 class="display-4">ToDo App!</h1>
+        <p class="lead">
+            Welcome to ToDo app!
+            <%= if (!current_user) { %>
+            if you want to enjoy it, please
+            <a href="<%= signinPath() %>">
+                Sing In
+            </a> or
+            <a href="<%= newUsersPath() %>">
+                Register
+            </a>
+            <% } else { %>
+            <a href="<%= listTodoPath() %>">
+                Check your last ToDos!
+            </a>
+            <% } %>
+        </p>
+    </div>
+</div>

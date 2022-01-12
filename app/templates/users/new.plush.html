@@ -4,8 +4,8 @@
     <div class="card shadow-sm">
         <div class="card-body mx-5 px-5 py-5 d-flex flex-column justify-content-center">
             <h3 class="card-title font-weight-bold text-center">Register</h3>
-            <%= form_for(user, {action: usersPath(), method: "POST", autocomplete: "off"}) { %>
-            <%= f.InputTag("FirsName")%>
+            <%= form_for(user, {action: saveUserPath(), method: "POST", autocomplete: "off"}) { %>
+            <%= f.InputTag("FirstName")%>
             <%= f.InputTag("LastName")%>
             <%= f.InputTag("Email")%>
             <%= f.InputTag("Password", {type: "password" }) %>

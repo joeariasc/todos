@@ -17,6 +17,7 @@ type Todo struct {
 	Details     nulls.String `json:"details" db:"details"`
 	LimitDate   time.Time    `json:"limit_date" db:"limit_date"`
 	IsCompleted bool         `json:"is_completed" db:"is_completed"`
+	UserID      uuid.UUID    `json:"user_id" db:"user_id"`
 	CreatedAt   time.Time    `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time    `json:"updated_at" db:"updated_at"`
 }
