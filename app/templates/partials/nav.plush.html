@@ -15,7 +15,7 @@
         </div>
         <div class="ml-lg-4 text-white">
             <%= if (current_user) { %>
-            <p class="m-0 font-weight-bold">4 Incompleted Tasks</p>
+            <p class="m-0 font-weight-bold"><%= uncompleted_todos%> Uncompleted ToDo(s)</p>
             <% } %>
             <small class="m-0"><%= todayDate() %></small>
         </div>
