@@ -1,0 +1,5 @@
+add_foreign_key("todos", "user_id", {"users": ["id"]}, {
+    "name": "todos_users_id_fk",
+    "on_delete": "CASCADE",
+    "on_update": "CASCADE",
+})
