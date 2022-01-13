@@ -3,6 +3,7 @@
 package middleware
 
 import (
+	"net/http"
 	"todos/app/models"
 
 	tx "github.com/gobuffalo/buffalo-pop/v2/pop/popmw"
@@ -63,7 +64,7 @@ func UncompletedTodos(next buffalo.Handler) buffalo.Handler {
 		count, err := tx.Where("user_id = ?", currentUserID).Count(&models.Todos{})
 
 		if err != nil {
-			return errors.WithStack(err)
+			return c.Error(http.StatusInternalServerError, errors.Wrap(err, "UncompletedTodos MW"))
 		}
 
 		c.Set("uncompleted_todos", count)
