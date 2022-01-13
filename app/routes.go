@@ -16,6 +16,7 @@ func setRoutes(root *buffalo.App) {
 
 	root.Use(middleware.Authorize)
 	root.Use(middleware.SetCurrentUser)
+	root.Use(middleware.UncompletedTodos)
 
 	root.GET("/", actions.Home).Name("homeTodoPath")
 
@@ -34,5 +35,6 @@ func setRoutes(root *buffalo.App) {
 
 	root.Middleware.Skip(middleware.Authorize, actions.Home, actions.UsersNew, actions.UsersCreate, actions.AuthNew, actions.AuthCreate)
 	root.Middleware.Skip(middleware.SetCurrentUser, actions.UsersNew, actions.UsersCreate, actions.AuthNew, actions.AuthCreate)
+	root.Middleware.Skip(middleware.UncompletedTodos, actions.UsersNew, actions.UsersCreate, actions.AuthNew, actions.AuthCreate)
 	root.ServeFiles("/", base.Assets)
 }

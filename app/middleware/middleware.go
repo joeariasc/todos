@@ -3,6 +3,7 @@
 package middleware
 
 import (
+	"net/http"
 	"todos/app/models"
 
 	tx "github.com/gobuffalo/buffalo-pop/v2/pop/popmw"
@@ -52,6 +53,21 @@ func Authorize(next buffalo.Handler) buffalo.Handler {
 			c.Flash().Add("danger", "You must be authorized to see that page")
 			return c.Redirect(302, "/")
 		}
+		return next(c)
+	}
+}
+
+func UncompletedTodos(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		currentUserID := c.Session().Get("current_user_id")
+		tx := c.Value("tx").(*pop.Connection)
+		count, err := tx.Where("user_id = ?", currentUserID).Count(&models.Todos{})
+
+		if err != nil {
+			return c.Error(http.StatusInternalServerError, errors.Wrap(err, "UncompletedTodos MW"))
+		}
+
+		c.Set("uncompleted_todos", count)
 		return next(c)
 	}
 }
