@@ -2,6 +2,7 @@ package actions_test
 
 import (
 	"net/http"
+	"net/url"
 	"time"
 	"todos/app/models"
 
@@ -37,7 +38,7 @@ func (as ActionSuite) Test_User_Todos_Blank_State() {
 
 func (as ActionSuite) Test_User_Todos() {
 	// 1. Arrange
-	currentUser := models.User{
+	/*currentUser := models.User{
 		FirstName: "Joe",
 		LastName:  "Arias",
 		Email:     "jarias@testing.com",
@@ -48,118 +49,77 @@ func (as ActionSuite) Test_User_Todos() {
 
 	as.Session.Set("current_user", currentUser)
 	as.Session.Set("current_user_id", currentUser.ID)
-	as.Session.Save()
+	as.Session.Save()*/
+	as.Login()
 
-	todos := models.Todos{
-		{
-			Title:     "Nothing much to do 1",
-			Details:   nulls.NewString("Oh yes, it's a lovely day to make tests"),
-			LimitDate: time.Now(),
-			UserID:    currentUser.ID,
-		},
-		{
-			Title:     "Nothing much to do 2",
-			Details:   nulls.NewString("Oh yes, it's a lovely day to make tests"),
-			LimitDate: time.Now(),
-			UserID:    currentUser.ID,
-		},
+	limitDate := time.Now().AddDate(0, 0, 3)
+
+	form := url.Values{
+		"Title":     []string{"Test Title"},
+		"Details":   []string{"Some long description"},
+		"LimitDate": []string{limitDate.Format("2006-01-02")},
 	}
 
-	as.NoError(tx.Create(&todos))
-
 	// 2. Act
-	res := as.HTML("/todos").Get()
+	res := as.HTML("/todo").Post(form)
 
 	// 3. Assert
-	as.Equal(http.StatusOK, res.Code)
+	as.Equal(http.StatusSeeOther, res.Code)
+	as.Equal("/todos/", res.Location())
 
+	res = as.HTML("/todos").Get()
 	body := res.Body.String()
-	as.Contains(body, "Joe Arias")
-	as.Contains(body, "Nothing much to do 1")
-	as.Contains(body, "Nothing much to do 2")
+
+	as.Contains(body, "Test Title")
+	as.Contains(body, limitDate.Format("Monday 02, January 2006"))
+	as.Contains(body, "1 Uncompleted ToDo(s)")
 }
 
 func (as ActionSuite) Test_Create_Todos_Validation() {
 	// 1. Arrange
-	currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
+	as.Login()
 
-	tx := as.DB
-	as.NoError(tx.Create(&currentUser))
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	as.Session.Save()
-
-	todo := models.Todo{
-		Title:     "",
-		Details:   nulls.NewString("Little"),
-		LimitDate: time.Now(),
-		UserID:    currentUser.ID,
-	}
-
-	// 2. Act
-	res := as.HTML("/todo").Post(todo)
-
-	// 3. Assert
-	as.Equal(http.StatusUnprocessableEntity, res.Code)
-}
-
-func (as ActionSuite) Test_Create_Todos() {
-	// 1. Arrange
-	currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
-
-	tx := as.DB
-	as.NoError(tx.Create(&currentUser))
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	as.Session.Save()
-
-	todos := models.Todos{
+	tcases := []struct { // table-driven tests
+		URLValues        url.Values
+		ExpectedHTTPCode int
+		ExpectedLocation string
+	}{
 		{
-			Title:     "first Todo",
-			Details:   nulls.NewString("first description"),
-			LimitDate: time.Now(),
-			UserID:    currentUser.ID,
+			URLValues: url.Values{
+				"Title":     []string{"First Todo"},
+				"Details":   []string{"first description"},
+				"LimitDate": []string{time.Now().AddDate(0, 0, 5).Format("2006-01-02")},
+			},
+			ExpectedHTTPCode: http.StatusSeeOther,
+			ExpectedLocation: "/todos/",
 		},
 		{
-			Title:     "second Todo",
-			Details:   nulls.NewString("second description"),
-			LimitDate: time.Now().AddDate(0, 0, 10),
-			UserID:    currentUser.ID,
+			URLValues: url.Values{
+				"Title":     []string{"Second Todo"},
+				"Details":   []string{"second description"},
+				"LimitDate": []string{time.Now().AddDate(0, 0, -1).Format("2006-01-02")},
+			},
+			ExpectedHTTPCode: http.StatusUnprocessableEntity,
+			ExpectedLocation: "",
 		},
 	}
 
 	// 2. Act
-	for _, todo := range todos {
-		res := as.HTML("/todo").Post(todo)
+	for i, tc := range tcases {
+		res := as.HTML("/todo").Post(tc.URLValues)
 
 		// 3. Assert
-		as.Equal(http.StatusOK, res.Code)
+		as.Equal(tc.ExpectedHTTPCode, res.Code, "Case #: %v", i)
+
+		if tc.ExpectedLocation != "" {
+			as.Equal(tc.ExpectedLocation, res.Location())
+		}
 	}
 }
 
 func (as ActionSuite) Test_Update_Todos() {
 	// 1. Arrange
-	currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
-
-	tx := as.DB
-
-	as.NoError(tx.Create(&currentUser))
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	err := as.Session.Save()
-	as.NoError(err)
+	currentUser := as.Login()
 
 	todo := models.Todo{
 		Title:     "Hello!",
@@ -168,15 +128,16 @@ func (as ActionSuite) Test_Update_Todos() {
 		UserID:    currentUser.ID,
 	}
 
+	tx := as.DB
+
 	as.NoError(tx.Create(&todo))
 
-	form := &models.Todo{
-		ID:          todo.ID,
-		Title:       "Do nothing!",
-		Details:     nulls.NewString("Updated! but maybe tomorrow I'll do it"),
-		IsCompleted: false,
-		LimitDate:   time.Now().AddDate(0, 0, 15),
-		UserID:      currentUser.ID,
+	limitDate := time.Now().AddDate(0, 0, 3)
+
+	form := url.Values{
+		"Title":     []string{"Do nothing!"},
+		"Details":   []string{"Updated! but maybe tomorrow I'll do it"},
+		"LimitDate": []string{limitDate.Format("2006-01-02")},
 	}
 
 	// 2. Act
@@ -185,26 +146,16 @@ func (as ActionSuite) Test_Update_Todos() {
 	// 3. Assert
 	as.Equal(http.StatusSeeOther, res.Code)
 
-	err = tx.Reload(&todo)
+	err := tx.Reload(&todo)
 	as.NoError(err)
 	as.Equal("Do nothing!", todo.Title)
 }
 
 func (as ActionSuite) Test_Delete_Todos() {
 	// 1. Arrange
-	currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
+	currentUser := as.Login()
 
 	tx := as.DB
-
-	as.NoError(tx.Create(&currentUser))
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	err := as.Session.Save()
-	as.NoError(err)
 
 	todo := models.Todo{
 		Title:     "No one to do!",
