@@ -11,18 +11,7 @@ import (
 
 func (as ActionSuite) Test_User_Todos_Blank_State() {
 	// 1. Arrange
-	currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
-
-	tx := as.DB
-	as.NoError(tx.Create(&currentUser))
-
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	as.Session.Save()
+	as.Login()
 
 	// 2. Act
 	res := as.HTML("/todos").Get()
