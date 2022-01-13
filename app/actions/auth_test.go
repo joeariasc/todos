@@ -24,7 +24,7 @@ func (as *ActionSuite) Test_Auth_Create() {
 
 	res := as.HTML("/signin").Post(u)
 	as.Equal(302, res.Code)
-	as.Equal("/", res.Location())
+	as.Equal("/todos/", res.Location())
 }
 
 func (as *ActionSuite) Test_Auth_Create_UnknownUser() {
