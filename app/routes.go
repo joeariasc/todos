@@ -31,6 +31,7 @@ func setRoutes(root *buffalo.App) {
 	root.POST("/todo", actions.SaveTodo).Name("saveTodoPath")
 	root.GET("/todo/{todo_id}/edit", actions.EditTodo).Name("editTodoPath")
 	root.PUT("/todo/{todo_id}", actions.UpdateTodo).Name("updateTodoPath")
+	root.PUT("/todo/updateStatus/{todo_id}", actions.UpdateTodoStatus).Name("updateTodoStatusPath")
 	root.DELETE("/todo/{todo_id}/", actions.DeleteTodo).Name("deleteTodoPath")
 
 	root.Middleware.Skip(middleware.Authorize, actions.Home, actions.UsersNew, actions.UsersCreate, actions.AuthNew, actions.AuthCreate)

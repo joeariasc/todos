@@ -13,6 +13,12 @@ func Index(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	currentUser := c.Value("current_user").(*models.User)
 	q := tx.Where("user_id = ?", currentUser.ID)
+	todosStatus := c.Param("todos_status")
+	isCompleted := true
+	if todosStatus == "" || todosStatus == "pending" {
+		isCompleted = false
+	}
+	q.Where("is_completed = ?", isCompleted)
 	todos := models.Todos{}
 	err := q.All(&todos)
 	if err != nil {
@@ -71,6 +77,24 @@ func UpdateTodo(c buffalo.Context) error {
 		c.Set("todo", todo)
 		c.Set("errors", verrs.Errors)
 		return c.Render(http.StatusUnprocessableEntity, r.HTML("todos/edit.plush.html"))
+	}
+	if err := tx.Update(&todo); err != nil {
+		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while updating a todo"))
+	}
+	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
+}
+
+func UpdateTodoStatus(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	todo := models.Todo{}
+	todoID := c.Param("todo_id")
+	if err := tx.Find(&todo, todoID); err != nil {
+		return c.Render(http.StatusNotFound, r.String("ToDo not Found"))
+	}
+	if todo.IsCompleted {
+		todo.IsCompleted = false
+	} else {
+		todo.IsCompleted = true
 	}
 	if err := tx.Update(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while updating a todo"))

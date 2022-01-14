@@ -27,18 +27,6 @@ func (as ActionSuite) Test_User_Todos_Blank_State() {
 
 func (as ActionSuite) Test_User_Todos() {
 	// 1. Arrange
-	/*currentUser := models.User{
-		FirstName: "Joe",
-		LastName:  "Arias",
-		Email:     "jarias@testing.com",
-	}
-
-	tx := as.DB
-	as.NoError(tx.Create(&currentUser))
-
-	as.Session.Set("current_user", currentUser)
-	as.Session.Set("current_user_id", currentUser.ID)
-	as.Session.Save()*/
 	as.Login()
 
 	limitDate := time.Now().AddDate(0, 0, 3)
@@ -160,4 +148,35 @@ func (as ActionSuite) Test_Delete_Todos() {
 
 	// 3. Assert
 	as.Equal(http.StatusSeeOther, res.Code)
+}
+
+func (as ActionSuite) Test_Update_Todo_Status() {
+	currentUser := as.Login()
+	tx := as.DB
+
+	limitDate := time.Now().AddDate(0, 0, 3)
+
+	todo := models.Todo{
+		Title:     "Hello!",
+		Details:   nulls.NewString("Really nothing!"),
+		LimitDate: limitDate,
+		UserID:    currentUser.ID,
+	}
+
+	as.NoError(tx.Create(&todo))
+
+	form := url.Values{
+		"Title":       []string{"Do nothing!"},
+		"Details":     []string{"Updated! but maybe tomorrow I'll do it"},
+		"LimitDate":   []string{limitDate.Format("2006-01-02")},
+		"IsCompleted": []string{"true"},
+	}
+
+	res := as.HTML("/todo/updateStatus/{%s}", todo.ID).Put(form)
+	as.Equal(http.StatusSeeOther, res.Code)
+
+	err := tx.Reload(&todo)
+	as.NoError(err)
+	as.True(todo.IsCompleted)
+	as.Equal("/todos/", res.Location())
 }
