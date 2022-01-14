@@ -1,6 +1,7 @@
 package actions_test
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -23,6 +24,59 @@ func (as ActionSuite) Test_User_Todos_Blank_State() {
 	as.Contains(body, "Joe Arias")
 	as.Contains(body, "No ToDos to show!")
 	as.Contains(body, "Sign Out")
+}
+
+func (as ActionSuite) Test_User_Todos_Index_Page() {
+	// 1. Arrange
+	u := as.Login()
+
+	todos := models.Todos{
+		{
+			Title:     "ToDo 1",
+			Details:   nulls.NewString("Details for ToDo 1"),
+			LimitDate: time.Now().AddDate(0, 0, 1),
+			UserID:    u.ID,
+		},
+		{
+			Title:     "ToDo 2",
+			Details:   nulls.NewString("Details for ToDo 2"),
+			LimitDate: time.Now().AddDate(0, 0, 2),
+			UserID:    u.ID,
+		},
+		{
+			Title:       "ToDo 3",
+			Details:     nulls.NewString("Details for ToDo 3"),
+			LimitDate:   time.Now().AddDate(0, 0, 3),
+			IsCompleted: true,
+			UserID:      u.ID,
+		},
+		{
+			Title:       "ToDo 4",
+			Details:     nulls.NewString("Details for ToDo 4"),
+			LimitDate:   time.Now().AddDate(0, 0, 4),
+			IsCompleted: true,
+			UserID:      u.ID,
+		},
+	}
+
+	tx := as.DB
+
+	as.NoError(tx.Create(&todos))
+
+	res := as.HTML("/todos").Get()
+
+	as.Equal(http.StatusOK, res.Code)
+	body := res.Body.String()
+
+	as.Contains(body, fmt.Sprintf("%s", todos[0].Title))
+	as.Contains(body, fmt.Sprintf("%s", todos[1].Title))
+
+	res2 := as.HTML("/todos?todos_status=completed").Get()
+
+	as.Equal(http.StatusOK, res.Code)
+	body = res2.Body.String()
+	as.Contains(body, fmt.Sprintf("%s", todos[2].Title))
+	as.Contains(body, fmt.Sprintf("%s", todos[3].Title))
 }
 
 func (as ActionSuite) Test_User_Todos() {
@@ -178,5 +232,5 @@ func (as ActionSuite) Test_Update_Todo_Status() {
 	err := tx.Reload(&todo)
 	as.NoError(err)
 	as.True(todo.IsCompleted)
-	as.Equal("/todos/", res.Location())
+	as.Equal("/todos?todos_status=pending", res.Location())
 }
