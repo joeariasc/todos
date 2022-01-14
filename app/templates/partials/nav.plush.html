@@ -1,21 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-todos p-4">
     <div class="container">
         <div class="border-right brand-container">
-            <a
-                    class="
-                    brand-title
-                    navbar-brand
-                    text-white
-                    font-weight-bold
-                    mr-lg-5 mr-sm-0 mr-md-0
-                "
-                    href="<%= listTodoPath() %>"
-            >ToDo List</a
-            >
+            <a class="brand-title navbar-brand text-white font-weight-bold mr-lg-5 mr-sm-0 mr-md-0"
+               href="<%= listTodoPath() %>?todos_status=pending">
+                ToDo List
+            </a>
         </div>
         <div class="ml-lg-4 text-white">
             <%= if (current_user) { %>
-            <p class="m-0 font-weight-bold"><%= uncompleted_todos%> Uncompleted ToDo(s)</p>
+            <p class="m-0 font-weight-bold">
+                <%= uncompleted_todos%> Uncompleted ToDo(s)</p>
             <% } %>
             <small class="m-0"><%= todayDate() %></small>
         </div>
@@ -36,20 +30,23 @@
             <ul class="navbar-nav ml-auto">
                 <%= if (current_user) { %>
                 <li class="nav-item">
-                    <a
-                            class="nav-link text-white font-weight-bold"
-                            href="#"
-                    >Incomplete Task</a
-                    >
+                    <a class="nav-link text-white
+                            <%= if(params["todos_status"] == "pending" || params["todos_status"] == "") { %>font-weight-bold<% } %>"
+                            href="<%= listTodoPath() %>?todos_status=pending">
+                        Uncompleted ToDos
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"
-                    >Completed Task</a
-                    >
+                    <a class="nav-link text-white
+                            <%= if(params["todos_status"] == "completed") { %>font-weight-bold<% } %>"
+                            href="<%= listTodoPath() %>?todos_status=completed">
+                        Completed ToDos
+                    </a>
                 </li>
                 <% } %>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle text-white"
+                       href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-expanded="false">
                         <%= if (current_user) { %>
                         <%= current_user.FirstName + " " + current_user.LastName %>
