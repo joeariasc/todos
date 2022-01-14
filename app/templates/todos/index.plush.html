@@ -29,7 +29,16 @@
             <%= for (todo) in todos { %>
             <tr>
                 <td class="text-center" scope="row">
-                    <i class="text-muted far fa-check-circle"></i>
+                    <%= form_for(todo, {action: updateTodoStatusPath({todo_id: todo.ID}), method: "PUT", class: "form"}) { %>
+                    <%= if (!todo.IsCompleted) { %>
+                        <button type="submit" class="border-0 rounded bg-light">
+                            <i class="text-muted far fa-check-circle"></i>
+                        </button>
+                    <% } else { %>
+                        <button type="submit" class="border-0 rounded bg-light">
+                            <i class="text-muted fas fa-undo"></i>
+                        </button>
+                    <% } %>
                 </td>
                 <td>
                     <a class="todos-links-color" href="#">
