@@ -2,7 +2,7 @@
     <div class="container">
         <div class="border-right brand-container">
             <a class="brand-title navbar-brand text-white font-weight-bold mr-lg-5 mr-sm-0 mr-md-0"
-               href="<%= listTodoPath() %>?todos_status=pending">
+               href="<%= listTodoPath() %>">
                 ToDo List
             </a>
         </div>
@@ -31,7 +31,7 @@
                 <%= if (current_user) { %>
                 <li class="nav-item">
                     <a class="nav-link text-white
-                            <%= if(params["todos_status"] == "pending" || params["todos_status"] == "") { %>font-weight-bold<% } %>"
+                            <%= if(params["todos_status"] == "pending" || !params["todos_status"]) { %>font-weight-bold<% } %>"
                             href="<%= listTodoPath() %>?todos_status=pending">
                         Uncompleted ToDos
                     </a>
