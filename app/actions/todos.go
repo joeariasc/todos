@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"net/http"
 	"todos/app/models"
 
@@ -88,6 +89,7 @@ func UpdateTodoStatus(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	todo := models.Todo{}
 	todoID := c.Param("todo_id")
+	todoStatus := "?todos_status=completed"
 	if err := tx.Find(&todo, todoID); err != nil {
 		return c.Render(http.StatusNotFound, r.String("ToDo not Found"))
 	}
@@ -95,11 +97,13 @@ func UpdateTodoStatus(c buffalo.Context) error {
 		todo.IsCompleted = false
 	} else {
 		todo.IsCompleted = true
+		todoStatus = "?todos_status=pending"
 	}
 	if err := tx.Update(&todo); err != nil {
 		return c.Error(http.StatusInternalServerError, errors.Wrap(err, "Update - Error while updating a todo"))
 	}
-	return c.Redirect(http.StatusSeeOther, "listTodoPath()")
+	pathRedirect := fmt.Sprintf("%s", "/todos"+todoStatus)
+	return c.Redirect(http.StatusSeeOther, pathRedirect)
 }
 
 func DeleteTodo(c buffalo.Context) error {
